@@ -10,11 +10,13 @@
        http://www.springframework.org/schema/aop
        http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <bean id="fooService" class="com.gouzhijun.spring.transaction.FooServiceImpl"/>
+    <bean id="fooService" class="com.gouzhijun.spring.transaction.declarative.FooServiceImpl"/>
+
+    <tx:annotation-driven/>
 
     <aop:config>
         <aop:pointcut id="fooServiceOperation"
-                      expression="execution(* com.gouzhijun.spring.transaction.FooServiceImpl.*(..))"/>
+                      expression="execution(* com.gouzhijun.spring.transaction.declarative.FooServiceImpl.*(..))"/>
         <aop:advisor advice-ref="txAdvice" pointcut-ref="fooServiceOperation"/>
     </aop:config>
 
@@ -36,6 +38,10 @@
 
     <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="programmaticService" class="com.gouzhijun.spring.programmatic.ProgrammaticServiceImpl">
+        <constructor-arg name="transactionManager" ref="txManager"/>
     </bean>
 
 </beans>

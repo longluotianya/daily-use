@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/integration
+       http://www.springframework.org/schema/integration/spring-integration.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+
+    <context:component-scan base-package="com.gouzhijun.spring"/>
+
+    <int:channel id="exampleChannel"/>
+
+    <int:publish-subscribe-channel id="exampleChannel2"/>
+
+    <int:channel id="numberChannel" datatype="java.lang.Number"/>
+
+    <int:service-activator input-channel="numberChannel" ref="defaultConsumer" method="consumer"/>
+
+    <!--PayloadTypeRouter-->
+    <!--method1-->
+    <!--<bean id="payloadTypeRouter" class="org.springframework.integration.router.PayloadTypeRouter">-->
+        <!--<property name="channelMappings">-->
+            <!--<map>-->
+                <!--<entry key="java.lang.String" value-ref="stringChannel"/>-->
+                <!--<entry key="java.lang.Integer" value-ref="integerChannel"/>-->
+            <!--</map>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <!--<int:router input-channel="routingChannel" ref="payloadTypeRouter"/>-->
+
+    <!--method2-->
+    <!--<int:payload-type-router input-channel="routingChannel">-->
+        <!--<int:mapping type="java.lang.String" channel="stringChannel"/>-->
+        <!--<int:mapping type="java.lang.Integer" channel="integerChannel"/>-->
+    <!--</int:payload-type-router>-->
+
+    <!--HeaderValueRouter-->
+    <!--<int:header-value-router input-channel="routingChannel" header-name="testHeader">-->
+        <!--<int:mapping value="someHeaderValue" channel="channelA"/>-->
+        <!--<int:mapping value="someOtherHeaderValue" channel="channelB"/>-->
+    <!--</int:header-value-router>-->
+
+    <int:channel id="routingChannel"/>
+    <int:channel id="channel1"/>
+    <int:channel id="channel2"/>
+    <int:service-activator input-channel="channel1" ref="defaultConsumer" method="consumer"/>
+    <int:service-activator input-channel="channel2" ref="routerConsumer" method="consumer"/>
+
+
+    <!--<int:recipient-list-router id="customRouter" input-channel="routingChannel">-->
+        <!--<int:recipient channel="channel1"/>-->
+        <!--<int:recipient channel="channel2"/>-->
+    <!--</int:recipient-list-router>-->
+    <int:recipient-list-router id="customRouter" input-channel="routingChannel">
+        <int:recipient channel="channel1" selector-expression="payload.equals('foo')"/>
+        <int:recipient channel="channel2" selector-expression="headers.containsKey('bar')"/>
+    </int:recipient-list-router>
+
+    <int:channel id="input"/>
+    <int:filter input-channel="input" ref="selector" output-channel="channel2" discard-channel="errorChannel"/>
+    <bean id="selector" class="com.gouzhijun.spring.intergration.SimpleMessageSelector"/>
+
+</beans>

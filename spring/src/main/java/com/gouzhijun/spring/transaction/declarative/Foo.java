@@ -1,4 +1,4 @@
-package com.gouzhijun.spring.transaction;
+package com.gouzhijun.spring.transaction.declarative;
 
 /**
  * Foo Bo

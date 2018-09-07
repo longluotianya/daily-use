@@ -1,4 +1,4 @@
-package com.gouzhijun.spring.transaction;
+package com.gouzhijun.spring.transaction.declarative;
 
 /**
  * Spring-data的例子，相应链接地址
@@ -15,4 +15,6 @@ public interface FooService {
     void insertFoo(Foo foo) throws MyTransactionException;
 
     void updateFoo(Foo foo);
+
+    void deleteFoo(Foo foo);
 }

@@ -11,13 +11,13 @@ import org.springframework.stereotype.Component;
 @Component(value = "eventPublisher")
 public class EventPublisher implements ApplicationEventPublisherAware {
 
-    private ApplicationEventPublisher applicationEventPublisher;
+    private static ApplicationEventPublisher applicationEventPublisher;
 
     public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
-    public ApplicationEventPublisher getApplicationEventPublisher() {
+    public static  ApplicationEventPublisher getApplicationEventPublisher() {
         return applicationEventPublisher;
     }
 }

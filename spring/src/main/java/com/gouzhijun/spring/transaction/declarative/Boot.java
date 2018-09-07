@@ -1,4 +1,4 @@
-package com.gouzhijun.spring.transaction;
+package com.gouzhijun.spring.transaction.declarative;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

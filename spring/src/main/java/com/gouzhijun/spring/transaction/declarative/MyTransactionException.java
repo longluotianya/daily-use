@@ -1,4 +1,4 @@
-package com.gouzhijun.spring.transaction;
+package com.gouzhijun.spring.transaction.declarative;
 
 /**
  * 用于检测Spring的事务管理默认的回滚是不是只是针对RuntimeException，而checked Exception是不会引起异常的。
